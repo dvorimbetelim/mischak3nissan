@@ -131,6 +131,170 @@ body {
 .play-btn:hover { transform: scale(1.05); }
 .card-kesher .play-btn { background: linear-gradient(135deg, var(--c1), var(--c3)); color: white; }
 .card-tzaddik .play-btn { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--dark); }
+.card-anagram { border-color: rgba(61,169,252,0.4); }
+.card-anagram:hover { border-color: var(--c2); box-shadow: 0 12px 40px rgba(61,169,252,0.25); }
+.card-anagram h2 { background: linear-gradient(135deg, var(--c2), var(--c4)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.card-anagram .play-btn { background: linear-gradient(135deg, var(--c2), var(--c4)); color: white; }
+
+/* ══════════════════════════════
+   ANAGRAM CHASAR (PYRAMID) GAME
+══════════════════════════════ */
+#anagram-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 20px 12px 60px;
+  animation: fadeIn 0.4s ease;
+}
+#anagram-screen header { text-align: center; margin-bottom: 28px; }
+#anagram-screen h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--c2), var(--c4));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+#anagram-screen .subtitle { color: var(--muted); font-size: 0.9rem; margin-top: 6px; }
+
+#pyramid-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 500px;
+  align-items: center;
+}
+
+.pyramid-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  animation: fadeIn 0.3s ease;
+}
+
+.pyramid-clue {
+  color: var(--muted);
+  font-size: 0.85rem;
+  flex: 1;
+  text-align: right;
+  line-height: 1.3;
+  min-width: 0;
+}
+
+.pyramid-boxes {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.letter-box {
+  width: 42px;
+  height: 48px;
+  border-radius: 8px;
+  border: 2px solid rgba(61,169,252,0.3);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+  transition: border-color 0.2s, background 0.2s;
+}
+.letter-box.hint { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
+.letter-box.correct { border-color: var(--c4); background: rgba(68,207,108,0.15); color: var(--c4); animation: popIn 0.35s ease; }
+.letter-box.wrong { border-color: var(--c3); background: rgba(239,69,101,0.1); }
+
+.pyramid-input-wrap {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  width: 100%;
+  max-width: 500px;
+}
+.pyramid-input {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(61,169,252,0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 1.1rem;
+  outline: none;
+  direction: rtl;
+  transition: border-color 0.2s;
+}
+.pyramid-input:focus { border-color: var(--c2); }
+.pyramid-input.correct { border-color: var(--c4); background: rgba(68,207,108,0.1); }
+.pyramid-input.wrong { border-color: var(--c3); background: rgba(239,69,101,0.08); animation: shake 0.4s ease; }
+
+.an-btn {
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 10px 22px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.an-btn:hover { transform: scale(1.04); }
+.an-btn-primary { background: linear-gradient(135deg, var(--c2), var(--c4)); color: white; }
+.an-btn-ghost { background: transparent; color: var(--muted); border: 1.5px solid #333; }
+.an-btn-ghost:hover { border-color: var(--muted); color: var(--text); }
+
+#an-message {
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  min-height: 24px;
+  color: var(--c2);
+  margin-top: 8px;
+  transition: opacity 0.3s;
+}
+#an-hint-area {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.hint-pill {
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 50px;
+  padding: 4px 14px;
+  font-size: 0.82rem;
+  color: var(--gold);
+}
+#an-win-area {
+  display: none;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+  margin-top: 16px;
+}
+#an-win-area h2 { font-size: 1.8rem; font-weight: 900; margin-bottom: 8px; }
+#an-win-area p { color: var(--muted); margin-bottom: 20px; }
+.promo-anagram {
+  display: none;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 20px 24px;
+  text-align: center;
+  margin-top: 16px;
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid rgba(255,255,255,0.08);
+  animation: popIn 0.4s ease;
+}
+.promo-anagram.visible { display: block; }
+.promo-anagram p { color: var(--muted); font-size: 0.95rem; margin-bottom: 14px; }
+.promo-anagram strong { color: var(--text); }
 
 /* ══════════════════════════════
    CROSS-GAME PROMO BANNER
@@ -358,6 +522,12 @@ body {
       <p>זהה את הדמות החסידית לפי תמונה מטושטשת</p>
       <button class="play-btn">בוא נשחק 👁</button>
     </div>
+    <div class="game-card card-anagram" onclick="showGame('anagram')">
+      <div class="card-emoji">🔤</div>
+      <h2>אנגרם חסר</h2>
+      <p>פירמידת מילים — בכל שלב חסרה אות אחת. האם תפענח?</p>
+      <button class="play-btn">בוא נשחק 🧩</button>
+    </div>
   </div>
 </div>
 
@@ -434,6 +604,38 @@ body {
   </div>
 </div>
 
+<!-- ═══ ANAGRAM CHASAR SCREEN ═══ -->
+<div id="anagram-screen">
+  <button class="back-btn" onclick="backToMenu()">← חזור לתפריט</button>
+  <header>
+    <h1>🔤 אנגרם חסר</h1>
+    <p class="subtitle">בכל שורה חסרה אות אחת — פענח את הפירמידה!</p>
+  </header>
+  <div id="pyramid-container"></div>
+  <div style="width:100%;max-width:500px;margin-top:16px;">
+    <div class="pyramid-input-wrap">
+      <input type="text" class="pyramid-input" id="an-input" placeholder="הקלד את המילה הבאה..." autocomplete="off" dir="rtl"
+        onkeydown="if(event.key==='Enter') anGuess()" />
+      <button class="an-btn an-btn-primary" onclick="anGuess()">✓</button>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:10px;justify-content:center;flex-wrap:wrap;">
+      <button class="an-btn an-btn-ghost" onclick="anHint()">💡 רמז</button>
+      <button class="an-btn an-btn-ghost" onclick="anRevealCurrent()">👁 גלה מילה</button>
+    </div>
+    <div id="an-message"></div>
+    <div id="an-hint-area"></div>
+  </div>
+  <div id="an-win-area">
+    <h2>🎉 כל הכבוד!</h2>
+    <p id="an-win-msg"></p>
+    <button class="an-btn an-btn-primary" onclick="anInit()">שחק שוב</button>
+    <div class="promo-anagram" id="anagram-promo">
+      <p>רוצה לשחק גם את <strong>מה הקשר?</strong> 🧠</p>
+      <button class="play-btn" style="background:linear-gradient(135deg,var(--c1),var(--c3));color:white" onclick="showGame('kesher')">בוא נשחק 🎮</button>
+    </div>
+  </div>
+</div>
+
 <div class="cf-wrap" id="cf-wrap"></div>
 
 <script>
@@ -444,6 +646,7 @@ function showGame(game) {
   document.getElementById('menu-screen').style.display = 'none';
   document.getElementById('kesher-screen').style.display = 'none';
   document.getElementById('tzaddik-screen').style.display = 'none';
+  document.getElementById('anagram-screen').style.display = 'none';
   document.getElementById('kesher-promo').classList.remove('visible');
   document.getElementById('tzaddik-promo').classList.remove('visible');
 
@@ -451,6 +654,10 @@ function showGame(game) {
     document.getElementById('kesher-screen').style.display = 'flex';
     gtag('event', 'game_start', { game_name: 'מה הקשר' });
     kInit();
+  } else if (game === 'anagram') {
+    document.getElementById('anagram-screen').style.display = 'flex';
+    gtag('event', 'game_start', { game_name: 'אנגרם חסר' });
+    anInit();
   } else {
     document.getElementById('tzaddik-screen').style.display = 'flex';
     gtag('event', 'game_start', { game_name: 'זהה את הדמות' });
@@ -461,6 +668,7 @@ function showGame(game) {
 function backToMenu() {
   document.getElementById('kesher-screen').style.display = 'none';
   document.getElementById('tzaddik-screen').style.display = 'none';
+  document.getElementById('anagram-screen').style.display = 'none';
   document.getElementById('menu-screen').style.display = 'flex';
 }
 
@@ -469,10 +677,10 @@ function backToMenu() {
 ══════════════════════════════ */
 const PALETTE = ['#ff8906','#3da9fc','#ef4565','#44cf6c','#f3d060','#9b5de5','#f15bb5','#00bbf9'];
 const DEFAULT_GROUPS = [
-  { name: 'לא חב״דניקים', color: '#ff8906', words: ['מתנגדים','שיינע אידן','מלאכים','משכילים'] },
-  { name: 'בתשרי אצל הרבי', color: '#3da9fc', words: ['מקורבים','אורחים','קראון‐הייטסים','חסידים'] },
-  { name: 'תכונות של חסיד', color: '#ef4565', words: ['עובדים','מנגנים','חוזרים','בינונים'] },
-  { name: 'כולל', color: '#44cf6c', words: ['זקנים','אברכים','חב״ד','שער ה'] },
+  { name: 'חוזרים מתקופות שונות', color: '#ff8906', words: ['שילם','יואל','חאצ׳ע','שייע'] },
+  { name: 'מושגים צבאיים עם מסר בעבודת ה׳', color: '#3da9fc', words: ['נשק אטומי','לייזר','טנק','רובה'] },
+  { name: 'הלב', color: '#ef4565', words: ['טמטום','גסות','כל','של התניא'] },
+  { name: 'תצורות שונות של כתבי חסידות', color: '#44cf6c', words: ['הנחה','הגהה','ליקוט','קונטרס'] },
 ];
 let kGroups = JSON.parse(JSON.stringify(DEFAULT_GROUPS));
 let kTiles = [], kSelected = new Set(), kMistakes = 0, kSolvedGroups = [];
@@ -728,6 +936,180 @@ function tzConfetti(n) {
     el.addEventListener('animationend', () => el.remove());
   }
 }
+
+/* ══════════════════════════════
+   ANAGRAM CHASAR (PYRAMID) LOGIC
+══════════════════════════════ */
+const AN_PUZZLES = [
+  {
+    rows: [
+      { word: 'תו',     clue: 'תואר נלווה לארץ הקודש',      hint: false },
+      { word: 'תור',    clue: 'בדרך לחלוקת דולרים',         hint: true  },
+      { word: 'תורה',   clue: 'מבצע מתשל"ו',                hint: false },
+      { word: 'תשורה',  clue: 'חילקו בחתונה',               hint: true  },
+    ]
+  }
+];
+
+let anPuzzle, anCurrentRow, anSolvedCount, anHintsUsed, anRevealedRows;
+
+function anInit() {
+  anPuzzle = AN_PUZZLES[0];
+  anCurrentRow = 0;
+  anSolvedCount = 0;
+  anHintsUsed = 0;
+  anRevealedRows = new Set();
+
+  document.getElementById('an-win-area').style.display = 'none';
+  document.getElementById('anagram-promo').classList.remove('visible');
+  document.getElementById('an-message').textContent = '';
+  document.getElementById('an-hint-area').innerHTML = '';
+  document.getElementById('an-input').value = '';
+  document.getElementById('an-input').className = 'pyramid-input';
+  document.getElementById('an-input').style.display = '';
+  document.querySelector('.pyramid-input-wrap').style.display = 'flex';
+  document.querySelectorAll('.an-btn-ghost').forEach(b => b.style.display = '');
+
+  anRenderPyramid();
+  setTimeout(() => document.getElementById('an-input').focus(), 100);
+}
+
+function anRenderPyramid() {
+  const container = document.getElementById('pyramid-container');
+  container.innerHTML = '';
+  anPuzzle.rows.forEach((row, i) => {
+    const rowEl = document.createElement('div');
+    rowEl.className = 'pyramid-row';
+    rowEl.id = 'row-' + i;
+
+    const clueEl = document.createElement('div');
+    clueEl.className = 'pyramid-clue';
+    clueEl.textContent = row.clue;
+
+    const boxesEl = document.createElement('div');
+    boxesEl.className = 'pyramid-boxes';
+    boxesEl.id = 'boxes-' + i;
+
+    const letters = [...row.word];
+    letters.forEach((ch, j) => {
+      const box = document.createElement('div');
+      box.className = 'letter-box';
+      box.id = 'box-' + i + '-' + j;
+      // Show hint letters
+      if (row.hint && anHintsUsed > 0) {
+        // hint letter is middle letter
+        const midIdx = Math.floor(letters.length / 2);
+        if (j === midIdx) {
+          box.textContent = ch;
+          box.classList.add('hint');
+        }
+      }
+      // Show solved rows
+      if (i < anCurrentRow || anRevealedRows.has(i)) {
+        box.textContent = ch;
+        box.classList.add(anRevealedRows.has(i) ? 'wrong' : 'correct');
+      }
+      boxesEl.appendChild(box);
+    });
+
+    rowEl.appendChild(clueEl);
+    rowEl.appendChild(boxesEl);
+    container.appendChild(rowEl);
+  });
+}
+
+function anShowMsg(msg, color) {
+  const el = document.getElementById('an-message');
+  el.textContent = msg;
+  el.style.color = color || 'var(--c2)';
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.textContent = ''; }, 3000);
+}
+
+function anGuess() {
+  if (anCurrentRow >= anPuzzle.rows.length) return;
+  const inp = document.getElementById('an-input');
+  const val = inp.value.trim();
+  if (!val) return;
+
+  const expected = anPuzzle.rows[anCurrentRow].word;
+
+  if (val === expected) {
+    // Mark letters correct
+    const letters = [...expected];
+    letters.forEach((ch, j) => {
+      const box = document.getElementById('box-' + anCurrentRow + '-' + j);
+      if (box) { box.textContent = ch; box.className = 'letter-box correct'; }
+    });
+    anCurrentRow++;
+    anSolvedCount++;
+    inp.value = '';
+    inp.className = 'pyramid-input';
+
+    if (anCurrentRow >= anPuzzle.rows.length) {
+      anShowWin();
+    } else {
+      anShowMsg('✅ נכון!', 'var(--c4)');
+      setTimeout(() => inp.focus(), 100);
+    }
+  } else {
+    inp.className = 'pyramid-input wrong';
+    anShowMsg('❌ לא נכון, נסה שוב', 'var(--c3)');
+    setTimeout(() => { inp.className = 'pyramid-input'; inp.select(); }, 600);
+  }
+}
+
+function anHint() {
+  if (anCurrentRow >= anPuzzle.rows.length) return;
+  const row = anPuzzle.rows[anCurrentRow];
+  if (!row.hint) {
+    anShowMsg('אין רמז לשורה הזו', 'var(--muted)');
+    return;
+  }
+  anHintsUsed++;
+  const letters = [...row.word];
+  const midIdx = Math.floor(letters.length / 2);
+  const box = document.getElementById('box-' + anCurrentRow + '-' + midIdx);
+  if (box && !box.textContent) {
+    box.textContent = letters[midIdx];
+    box.classList.add('hint');
+  }
+  anShowMsg('💡 רמז: אות ' + (midIdx + 1) + ' היא "' + letters[midIdx] + '"', 'var(--gold)');
+}
+
+function anRevealCurrent() {
+  if (anCurrentRow >= anPuzzle.rows.length) return;
+  const row = anPuzzle.rows[anCurrentRow];
+  anRevealedRows.add(anCurrentRow);
+  const letters = [...row.word];
+  letters.forEach((ch, j) => {
+    const box = document.getElementById('box-' + anCurrentRow + '-' + j);
+    if (box) { box.textContent = ch; box.className = 'letter-box wrong'; }
+  });
+  anCurrentRow++;
+  document.getElementById('an-input').value = '';
+  if (anCurrentRow >= anPuzzle.rows.length) {
+    anShowWin();
+  } else {
+    anShowMsg('המילה נחשפה — עבר לשורה הבאה', 'var(--muted)');
+  }
+}
+
+function anShowWin() {
+  document.getElementById('an-input').style.display = 'none';
+  document.querySelector('.pyramid-input-wrap').style.display = 'none';
+  document.querySelectorAll('.an-btn-ghost').forEach(b => b.style.display = 'none');
+  const revealed = anRevealedRows.size;
+  const msg = revealed === 0
+    ? 'פיצחת את כל הפירמידה ללא עזרה! 🏆'
+    : 'השלמת את הפירמידה' + (revealed > 0 ? ' (עם ' + revealed + ' חשיפות)' : '') + ' 🎉';
+  document.getElementById('an-win-msg').textContent = msg;
+  document.getElementById('an-win-area').style.display = 'block';
+  gtag('event', 'game_complete', { game_name: 'אנגרם חסר', revealed: revealed });
+  setTimeout(() => document.getElementById('anagram-promo').classList.add('visible'), 700);
+  tzConfetti(20);
+}
+
 </script>
 </body>
 </html>
