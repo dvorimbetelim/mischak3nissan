@@ -1069,15 +1069,15 @@ function tzConfetti(n) {
 const AN_PUZZLES = [
   {
     rows: [
-      { word: 'שן',       clue: 'אב מזיק',                hint: false },
-      { word: 'אנש',      clue: 'קבוצת השתייכות',          hint: false },
-      { word: 'תנשא',     clue: 'שנת הפלאות',              hint: false },
-      { word: 'שנאתי',    clue: 'בניגוד ליעקב, שאהבתי, אותו:',         hint: false },
-      { word: 'נשיאות',   clue: 'נתקבלה בתשי״א',       hint: false },
-      { word: 'ניאות',    clue: 'נעתר',                    hint: false },
-      { word: 'איתן',     clue: 'עצם הנשמה',               hint: false },
-      { word: 'תנא',      clue: 'כינוי לאדה״ז',         hint: false },
-      { word: 'תן',       clue: 'תעניק',                   hint: false },
+      { word: 'שן',       clue: 'אב מזיק',                             hint: false },
+      { word: 'אנש',      clue: 'קבוצת השתייכות',                       hint: false },
+      { word: 'תנשא',     clue: 'שנת הפלאות',                           hint: false },
+      { word: 'שנאתי',    clue: 'בניגוד ליעקב, שאהבתי, אותו:',          hint: false },
+      { word: 'נשיאות',   clue: 'נתקבלה בתשי״א',                    hint: false },
+      { word: 'ניאות',    clue: 'נעתר',                                  hint: false },
+      { word: 'איתן',     clue: 'עצם הנשמה',                            hint: false },
+      { word: 'תנא',      clue: 'כינוי לאדה״ז',                      hint: false },
+      { word: 'תן',       clue: 'תעניק',                                 hint: false },
     ]
   }
 ];
@@ -1297,7 +1297,7 @@ shuffled.forEach((c, i) => {
   btn.className = 'choice-btn';
   btn.id = 'choice-' + i;
   btn.innerHTML = `<span class="choice-num">${i+1}</span><span>${c}</span>`;
-  btn.onclick = () => answer(c, btn);
+  btn.onclick = () => ngAnswer(c, btn);
   choicesEl.appendChild(btn);
 });
 
