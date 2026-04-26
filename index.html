@@ -675,6 +675,7 @@ header p {
     <div id="kesher-win-screen">
       <h2>🎉 כל הכבוד!</h2>
       <p id="k-win-msg"></p>
+    <p id="k-percentile" style="display:none;color:var(--gold);font-size:0.9rem;margin-top:6px;"></p>
       <button class="btn btn-primary" id="btn-play-again">שחק שוב</button>
       <div class="promo-banner" id="kesher-promo">
         <p>רוצה לשחק גם את <strong>זהה את הדמות</strong>? 🕍</p>
@@ -902,6 +903,8 @@ function kShowWin() {
   const txt = kMistakes === 0 ? 'ללא טעויות! מדהים 🏆' : `עם ${kMistakes} טעות${kMistakes > 1 ? 'יות' : ''}`;
   document.getElementById('k-win-msg').textContent = 'סיימת את המשחק ' + txt;
   document.getElementById('kesher-win-screen').style.display = 'block';
+  submitStats('kesher', kMistakes, 0, 0);
+  showPercentile('kesher', kMistakes, 'k-percentile');
   document.getElementById('grid').style.display = 'none';
   document.querySelectorAll('#kesher-screen .actions').forEach(a => a.style.display = 'none');
   gtag('event', 'game_complete', { game_name: 'מה הקשר', mistakes: kMistakes });
@@ -1039,6 +1042,7 @@ function tzGiveUp() { tzSolved=false; tzPoints=0; tzShowResult(); }
 function tzShowResult() {
   document.getElementById('tz-game-screen').style.display = 'none';
   document.getElementById('tz-result-screen').style.display = 'flex';
+  submitStats('tzaddik', tzSolved ? 0 : 1, 0, 0);
   document.getElementById('result-img').src = TZ_IMG;
   document.getElementById('result-name').textContent = TZ_ANSWER;
   if (tzSolved) {
@@ -1212,6 +1216,7 @@ function anRevealCurrent() {
 }
 
 function anShowWin() {
+  submitStats('anagram', anRevealedRows.size, anHintsUsed || 0, 0);
   document.getElementById('an-input').style.display = 'none';
   document.querySelector('.pyramid-input-wrap').style.display = 'none';
   document.querySelectorAll('.an-btn-ghost').forEach(b => b.style.display = 'none');
@@ -1270,6 +1275,42 @@ function anShowWin() {
 </audio>
 
 <script>
+
+/* ══ STATISTICS ══ */
+const STATS_URL = 'https://script.google.com/macros/s/AKfycbzTs5AOz4S-fmhG4IIIr0t6F_yduVQjudJkzVsBAaiHIWc6eeNDg3O3KBY9WYkRcruZFQ/exec';
+
+function submitStats(game, mistakes, hints, time) {
+  fetch(STATS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ game, mistakes, hints, time })
+  }).catch(() => {});
+}
+
+async function getStats(game) {
+  try {
+    const res = await fetch(STATS_URL + '?t=' + Date.now());
+    const data = await res.json();
+    const arr = data[game] || [];
+    return arr;
+  } catch(e) { return []; }
+}
+
+async function showPercentile(game, myMistakes, elementId) {
+  const arr = await getStats(game);
+  if (arr.length < 3) return; // not enough data yet
+  const betterOrEqual = arr.filter(m => m >= myMistakes).length;
+  const pct = Math.round((betterOrEqual / arr.length) * 100);
+  const el = document.getElementById(elementId);
+  if (el) {
+    el.textContent = pct >= 99
+      ? '🏆 טוב יותר מ-99% מהשחקנים!'
+      : `טוב יותר מ-${pct}% מהשחקנים`;
+    el.style.display = 'block';
+  }
+}
+
 /* ══ NIGGUN LOGIC ══ */
 (function() {
   
@@ -1349,6 +1390,7 @@ function ngAnswer(choice, btn) {
   document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
 
   const correct = choice === SONG.correct;
+  submitStats('niggun', correct ? 0 : 1, 0, 0);
 
   document.querySelectorAll('.choice-btn').forEach(b => {
     const label = b.querySelector('span:last-child').textContent;
